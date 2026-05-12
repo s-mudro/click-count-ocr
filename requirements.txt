@@ -1,0 +1,1 @@
+easyocr pandas opencv-python matplotlib seaborn numpy 
