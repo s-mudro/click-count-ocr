@@ -2,24 +2,33 @@
 
 ## 📌 Project Summary
 
-I built an automated system to analyze the performance of warehouse order fulfillment staff, replacing a flawed tracking method that relied on Excel pivot tables. For that I used Python, OpenCV, and EasyOCR to read and transform data from low-quality smartphone photos of Excel screens. I processed this highly noisy data of a 130-day period, extracted end-of-day totals, and tracked the performance of 78 employees. Finally, I transformed it into clear, time-series insights that show real employees' efficiency.
+I built an automated analytics system to evaluate the performance of warehouse order fulfillment staff, replacing a flawed tracking method that relied on manual spreadsheet screenshots. To capture the missing data, I reconstructed scattered metrics directly from low-quality smartphone photos of Excel screens shared by management. Over a 130-day period, I consolidated these fragmented reports to track the daily output of 78 employees. Ultimately, this system eliminated subjective workplace evaluations and delivered clear, data-driven time-series insights into actual workforce productivity.
 
-## 📊 Business Context
+## 📊 Business Context & Objectives
 
-To optimize efficiency, this large-scale home goods e-commerce warehouse closely tracks the performance of order fulfillment staff. Employees use Mobile Data Terminals (MDTs) to scan item barcodes, making the daily "click count" the primary metric for evaluating productivity against a corporate baseline of 350 clicks per shift. However, the company lacked any data API, digital reporting system or dashboard. Management manually tracked performance using spreadsheet screenshots shared as smartphone photos. I brought all the data provided into one form in order to find out whether the corporate targets were realistic or the team was underperforming.
+### Warehouse Operations
+This large e-commerce company coordinates a massive logistics network to ship home goods. At the heart of this operation is the order fulfillment team. Workers use Mobile Data Terminals (MDTs) to scan item barcodes. Each MDT scan counts as a "click," which serves as the primary metric for evaluating daily performance. 
+
+### The Management Problem
+Despite the scale of the business, the warehouse completely lacked data APIs, dashboards, or digital reporting tools. Instead, management manually monitored performance by sharing smartphone photos of Excel spreadsheets. This chaotic approach made it impossible to evaluate staff objectively. Management suspected the team was underperforming, but they had no way to prove it.
+
+I consolidated this fragmented data into a single analytical system to solve this blindspot and evaluate performance against three clear benchmarks:
+* **The Corporate Baseline:** Prove whether the management's target of 350 clicks per shift was actually realistic.
+* **Peer Performance:** Benchmark individual employee output against the rest of the 78-person team to find outliers.
+* **Contextual Factors:** Such as high-stress periods, operational pauses, and new department launches.
+
 
 ## 💡 Findings & Conclusions
 <div align="center">
   <img src="./figures/fig_7.png" width="700">
   <p><i> Trend Analysis – 'Roman3' 7-day rolling average vs. company-wide performance baseline.</i></p>
 </div>
-The graph tracks my productivity over the entire 130-day observation period. It illustrates not only my individual efficiency, but how external factors impacted overall warehouse operations. A significant company-wide drop in productivity between late February and early March directly correlates with the outbreak of active military conflict in the region. Despite these severe disruptions, my performance recovered much faster than the company average. Following a forced operational pause, my output even hit a major peak driven by a backlog of high order volumes. But most importantly, the data shows my daily output consistently stayed well above both the company average and company's 350-click baseline.
+The graph tracks my productivity over the entire 130-day observation period. It illustrates not only my individual efficiency, but how external factors impacted warehouse performance. 
 
-## 🎯 The Analytical Objective
-The goal was to visualize and evaluate performance relative to:
-1.  **The Baseline:** The minimum required output (350 clicks).
-2.  **Peer Performance:** Comparison with the rest of the 78-person team.
-3.  **Contextual Factors:** Accounting for periods of high-stress operations and departmental launches.
+The early phase of the timeline highlights the launch of the new SABON department (January 1 – February 23), which sustained high operational volume. This was followed by a sharp, company-wide drop in productivity in late February, directly correlating with the outbreak of active military conflict in the region and resulting in a forced operational pause between February 28 and March 14. 
+
+Despite these severe disruptions, my performance recovered much faster than the company average. Following a forced operational pause, my output even hit a major peak driven by a backlog of high order volumes. But most importantly, the data shows my daily output consistently stayed well above both the company average and company's 350-click baseline.
+
 
 ## 🛠 Tech Stack & Data Pipeline
 
