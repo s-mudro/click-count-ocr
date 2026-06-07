@@ -1,0 +1,15 @@
+{
+    "data_path": "output/cleared_analyzed_data.csv",
+    "baseline_clicks": 350,
+    "figures_dir": "figures",
+    "target_employees": ["Roman3", "Dimav", "ArtiomB", "Fernando", "Vladimir3", "Yacov"],
+    "thai_staff_names": ["ANAN", "PHATHARAPHON3", "PAITOON3", "PATTAVEE3", "PHANTASAK3", "PHATTHANA3", "SATIT3", "SOMSAK3",
+ "WANCHALERM3", "WORAWUT3"],
+    "milestones": {
+        "sabon_start": "2026-01-01",
+        "sabon_end": "2026-02-23",
+        "epic_furry_start": "2026-02-28",
+        "epic_furry_end": "2026-03-14",
+        "golf_join_date": "2026-03-22"
+    }
+}
