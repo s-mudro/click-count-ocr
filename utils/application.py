@@ -1,71 +1,60 @@
 import streamlit as st
 import pandas as pd
+import os
+import sys
 from reader_config import load_config
-from functions import plot_click_distribution
+from functions import plot_rolling_average
 
-# --- 1. PAGE CONFIGURATION ---
-st.set_page_config(page_title="Employee Performance Tracker", layout="wide")
+# Setup page configuration
+st.set_page_config(page_title="Employee Performance Dashboard", layout="wide")
 st.title("📊 Employee Performance Dashboard")
 
-# --- 2. LOAD CONFIGURATION & DATA ---
-try:
-    config = load_config('config/config.json')
-except Exception as e:
-    st.error(f"Configuration error: {e}")
-    st.stop()
+# --- 1. DATA LOADING ---
+config = load_config()
 
-
-@st.cache_data
-def load_data(file_path):
-    """Loads dataset with caching to avoid reloading on every UI interaction."""
-    return pd.read_csv(file_path, encoding='utf-8-sig')
-
+# Build absolute path to avoid Errno 2
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+full_data_path = os.path.join(BASE_DIR, config['data_path'])
 
 try:
-    df = load_data(config['data_path'])
+    df = pd.read_csv(full_data_path, encoding='utf-16')
+    df['date'] = pd.to_datetime(df['date'])
 except Exception as e:
     st.error(f"Failed to load data from {config['data_path']}. Error: {e}")
     st.stop()
 
-# --- 3. SIDEBAR INTERFACE ---
+# --- 2. SIDEBAR & FILTERS ---
 st.sidebar.header("Filter Settings")
 
-# Get unique employee names from the dataset
-all_employees = df['name'].dropna().unique().tolist()
+# Single employee selection for the line chart
+all_employees = sorted(df['name'].dropna().unique().tolist())
+default_emp = "Roman3" if "Roman3" in all_employees else all_employees[0]
+selected_employee = st.sidebar.selectbox("Select Employee:", options=all_employees, index=all_employees.index(default_emp))
 
-# Multiselect for employees (defaulting to those specified in config)
-default_selection = [emp for emp in config['target_employees'] if emp in all_employees]
-selected_employees = st.sidebar.multiselect(
-    "Select Employees:",
-    options=all_employees,
-    default=default_selection
+# Date range slider
+min_date = df['date'].min().to_pydatetime()
+max_date = df['date'].max().to_pydatetime()
+
+selected_dates = st.sidebar.slider(
+    "Select Date Range:",
+    min_value=min_date,
+    max_value=max_date,
+    value=(min_date, max_date),
+    format="YYYY-MM-DD"
 )
 
-# --- 4. MAIN DASHBOARD ---
-if not selected_employees:
-    st.warning("Please select at least one employee from the sidebar.")
-else:
-    # --- Metrics Section ---
-    st.subheader("Quick Insights")
-    filtered_df = df[df['name'].isin(selected_employees)]
-    avg_clicks = int(filtered_df['clicks'].mean())
+start_date, end_date = selected_dates
 
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Selected Employees", len(selected_employees))
-    col2.metric("Average Clicks", avg_clicks, delta=avg_clicks - config['baseline_clicks'])
-    col3.metric("Total Records", len(filtered_df))
+# --- 3. MAIN DASHBOARD ---
+st.subheader("Performance Trend Analysis")
 
-    st.divider()
+# Generate and display the plot
+fig = plot_rolling_average(
+    df=df,
+    selected_employee=selected_employee,
+    start_date=start_date,
+    end_date=end_date,
+    baseline=config['baseline_clicks']
+)
 
-    # --- Plot Section ---
-    st.subheader("Distribution Analysis")
-
-    # Generate the plot using our functions.py
-    fig = plot_click_distribution(
-        df=df,
-        selected_employees=selected_employees,
-        baseline_clicks=config['baseline_clicks']
-    )
-
-    # Render the plot in Streamlit
-    st.pyplot(fig)
+st.pyplot(fig)

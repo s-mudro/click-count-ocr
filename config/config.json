@@ -1,5 +1,5 @@
 {
-    "data_path": "output/cleared_analyzed_data.csv",
+    "data_path": "output/df_latest_daily_version.csv",
     "baseline_clicks": 350,
     "figures_dir": "figures",
     "target_employees": ["Roman3", "Dimav", "ArtiomB", "Fernando", "Vladimir3", "Yacov"],
