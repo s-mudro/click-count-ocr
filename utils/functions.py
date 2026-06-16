@@ -1,10 +1,10 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.dates as mdates
 
-
-def plot_rolling_average(df, selected_employee, start_date, end_date, baseline):
+def plot_rolling_average(df, selected_employee, start_date, end_date, baseline, save_path=None):
     # Filter data based on the selected date range
     df_filtered = df[(df['date'] >= pd.to_datetime(start_date)) & (df['date'] <= pd.to_datetime(end_date))].copy()
 
@@ -58,5 +58,14 @@ def plot_rolling_average(df, selected_employee, start_date, end_date, baseline):
     plt.xticks(rotation=0)
     ax.legend(title='Legend', loc='lower left')
     plt.tight_layout()
+
+    # Save the plot locally if save_path is provided
+    if save_path:
+        # Extract directory from the file path and create it if missing
+        dir_name = os.path.dirname(save_path)
+        if dir_name:
+            os.makedirs(dir_name, exist_ok=True)
+        plt.savefig(save_path)
+        plt.close(fig)  # Close fig to prevent duplicate rendering issues
 
     return fig

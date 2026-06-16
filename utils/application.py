@@ -58,3 +58,24 @@ fig = plot_rolling_average(
 )
 
 st.pyplot(fig)
+
+st.divider()
+
+# --- 4. EXPORT / SAVE PLOT INTERFACE ---
+# Handle local file export to existing 'fig' directory when button is triggered
+if st.button("Save Plot"):
+    # Format dates into YYYYMMDD string strings
+    str_start = start_date.strftime('%Y%m%d')
+    str_end = end_date.strftime('%Y%m%d')
+
+    # Construct filename and full export path based on global root directory
+    filename = f"{selected_employee}_{str_start}_{str_end}.png"
+    fig_dir = os.path.join(BASE_DIR, 'fig')
+    full_save_path = os.path.join(fig_dir, filename)
+
+    # Regenerate plot and save it to the specified directory path
+    plot_rolling_average(df, selected_employee, start_date, end_date, config['baseline_clicks'],
+                         save_path=full_save_path)
+
+    # Display success state indicator in UI
+    st.success(f"✓ Plot successfully saved to: `fig/{filename}`")
